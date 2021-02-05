@@ -11,7 +11,8 @@ from  config import *
 
 class BusEnv(gym.Env):
 
-    def __init__(self):
+    def __init__(self,env):
+        self.env = env
         self.guess_count = 0
         self.number = 1
         self.n_tasks_in_node = [0, 0, 0, 0]
@@ -29,8 +30,9 @@ class BusEnv(gym.Env):
         #streaming data of task 
         self.data = pd.read_csv(os.path.join(DATA_TASK, "datatask{}.csv".format(self.index_of_episode))).to_numpy()
         self.data = np.sort(self.data, axis=0)
-        self.data[:,2] = self.data[:,2] / 1000
-        self.data[:,1] = self.data[:,1]/1024
+        #self.data[:,2] = self.data[:,2] / 1000.0
+        #self.data[:,1] = self.data[:,1] / 1024.0
+        
         self.n_quality_tasks = [0,0,0]
         self.queue = copy.deepcopy(self.data[self.data[:,0]==self.data[0][0]])
         self.data = self.data[self.data[:,0]!=self.data[0][0]]
@@ -48,16 +50,42 @@ class BusEnv(gym.Env):
             ,self.readexcel(902,self.queue[0][0]),0,1,\
             0,3,\
             self.queue[0][1],self.queue[0][2],self.queue[0][4]])
-        #save result into file csv
-        self.rewardfiles = open("DQL.csv","w")
+        #save result into file cs
+        if env == "MAB":
+            self.rewardfiles = open("MAB_5phut_env.csv","w")
+            self.quality_result_file = open("n_quality_tasks_mab.csv","w")
+            self.configuration_result_file = open(os.path.join(RESULT_DIR, "thongso_mab.csv"),"w")
+            self.node_computing = open("chiatask_mab.csv","w")
+            self.node_computing.write("somay,distance,may0,may1,may2,may3,reward\n")
+        elif env == "UCB":
+            self.rewardfiles = open("UCB_5phut_env.csv","w")
+            self.quality_result_file = open("n_quality_tasks_ucb.csv","w")
+            self.configuration_result_file = open(os.path.join(RESULT_DIR, "thongso_ucb.csv"),"w")
+            self.node_computing = open("chiatask_ucb.csv","w")
+            self.node_computing.write("somay,distance,may0,may1,may2,may3,reward\n")
+        elif env == "Fuzzy":
+            self.rewardfiles = open("Fuzzy_5phut_env.csv","w")
+            self.quality_result_file = open("n_quality_tasks_fuzzy.csv","w")
+            self.configuration_result_file = open(os.path.join(RESULT_DIR, "thongso_fuzzy.csv"),"w")
+            self.node_computing = open("chiatask_fuzzy.csv","w")
+            self.node_computing.write("somay,distance,may0,may1,may2,may3,reward\n")
+        elif env == "FDQO":
+            self.rewardfiles = open("FDQO_5phut_env.csv","w")
+            self.quality_result_file = open("n_quality_tasks_fdqo.csv","w")
+            self.configuration_result_file = open(os.path.join(RESULT_DIR, "thongso_fdqo.csv"),"w")
+            self.node_computing = open("chiatask_fdqo.csv","w")
+            self.node_computing.write("somay,distance,may0,may1,may2,may3,reward\n")
+        elif env == "DQL":
+            self.rewardfiles = open("DQL_5phut_env.csv","w")
+            self.quality_result_file = open("n_quality_tasks_dql.csv","w")
+            self.configuration_result_file = open(os.path.join(RESULT_DIR, "thongso_dql.csv"),"w")
+            self.node_computing = open("chiatask_dql.csv","w")
+            self.node_computing.write("somay,distance,may0,may1,may2,may3,reward\n")
         self.sumreward = 0
         self.nreward = 0
-        self.configuration_result_file = open(os.path.join(RESULT_DIR, "thongso.csv"),"w")
         self.configuration_result_file.write("server,bus1,bus2,bus3\n")
-        self.quality_result_file = open("n_quality_tasks.csv","w")
         self.quality_result_file.write("good,medium,bad\n")
-        self.node_computing = open("chiatask.csv","w")
-        self.node_computing.write("somay,distance,may0,may1,may2,may3,reward\n")
+
         self.seed()
 
     def readexcel(self, number_bus, time):
@@ -81,15 +109,20 @@ class BusEnv(gym.Env):
         #logic block when computing node is bus node
         if action>0 and action<4:
             Rate_trans_req_data = (10*np.log2(1+46/(np.power(self.observation[(action-1)*3],4)*100))) / 8
-            self.observation[1+(action-1)*3] =  self.observation[11]/self.observation[2+(action-1)*3] + max(self.observation[12]/Rate_trans_req_data,self.observation[1+(action-1)*3])
+            #print(Rate_trans_req_data)
+            self.observation[1+(action-1)*3] =  self.observation[11]/(self.observation[2+(action-1)*3]*1000) + max(self.observation[12]/(1000*Rate_trans_req_data),self.observation[1+(action-1)*3])
+            #print(self.observation[1+(action-1)*3])
+
             distance_response = self.readexcel(900+action-1,self.observation[1+(action-1)*3]+self.time)
             Rate_trans_res_data = (10*np.log2(1+46/(np.power(distance_response,4)*100)))/8
-            time_delay = (self.observation[1+(action-1)*3]+self.queue[0][3]/(Rate_trans_res_data*1000))
+            time_delay = self.observation[1+(action-1)*3]+self.queue[0][3]/(Rate_trans_res_data*1000)
             self.node_computing.write("{},{},{},{},{},{}".format(action,self.observation[(action-1)*3],self.observation[9],self.observation[1],self.observation[4],self.observation[7]))
         
         #logic block when computing node is server
         if action == 0:
-            self.observation[9] += self.observation[11]/self.observation[10]
+            self.observation[9] += self.observation[11]/(self.observation[10]*1000.0)
+            #import pdb;pdb.set_trace()
+
             time_delay = self.observation[9]
             self.node_computing.write("{},{},{},{},{},{}".format(action,0,self.observation[9],self.observation[1],self.observation[4],self.observation[7]))
         
@@ -158,8 +191,8 @@ class BusEnv(gym.Env):
         self.index_of_episode = self.index_of_episode + 1
         self.data = pd.read_csv(os.path.join(DATA_TASK,"datatask{}.csv".format(self.index_of_episode))).to_numpy()
         self.data = np.sort(self.data, axis=0)
-        self.data[:,2] = self.data[:,2]/1000
-        self.data[:,1] = self.data[:,1]/1024
+        #self.data[:,2] = self.data[:,2] / 1000.0
+        #self.data[:,1] = self.data[:,1] / 1024.0
         self.queue = copy.deepcopy(self.data[self.data[:,0]==self.data[0][0]])
         self.data = self.data[self.data[:,0]!=self.data[0][0]]
         self.time = self.queue[0][0]

@@ -11,12 +11,19 @@ class Bandit:
         self.end = False
         self.total_reward = 0
         self.avg_reward = []
+        self.count_5minus = 0
+        self.reward_5minus = 0
         if ucb:
-            print("ucb")
-            self.mab = open("ucb.csv","w")
+            self.enviroment = BusEnv("UCB")
+            self.mab = open("testUCB.csv","w")
+            self.his_files = open("UCB_5phut.csv","w")
         else:
-            self.mab = open("mab.csv","w")
-        self.enviroment = BusEnv()
+            self.enviroment = BusEnv("MAB")
+
+            self.mab = open("testMAB.csv","w")
+            self.his_files = open("MAB_5phut.csv","w")
+        self.his_files.write("count,reward,mean_reward\n")
+
         self.TrueValue = []
         np.random.seed(seed)
         #for i in range(self.k):
@@ -47,14 +54,19 @@ class Bandit:
         return action
 
     def takeAction(self, action):
+        self.count_5minus = self.count_5minus + 1
         self.times += 1
         self.action_times[action] += 1
         # take action and update value estimates
         # reward = self.TrueValue[action]
         m = self.enviroment.step(action)
         reward = m[1]
+        self.reward_5minus = self.reward_5minus + reward
         done = m[2]
-        if done : 
+        if done :
+            self.his_files.write("{},{},{}\n".format(self.count_5minus, self.reward_5minus, self.reward_5minus/self.count_5minus))
+            self.count_5minus = 0
+            self.reward_5minus = 0
             self.end = True
             self.enviroment.reset()
         # using incremental method to propagate

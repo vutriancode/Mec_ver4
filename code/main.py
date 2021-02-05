@@ -55,11 +55,11 @@ def Run_Fuzzy():
     sumreward = 0
     nreward = 0
     fuzzy_logic = Fuzzy_Controller()
-    files = open("fuzzy_100.csv","w")
-    files1 = open("mean_fuzzy_100.csv","w")
+    files = open("Fuzzy_5phut.csv","w")
+    files1 = open("testFuzzy.csv","w")
 
-    files.write("kq,sl\n")
-    env = BusEnv()
+    files.write("kq,sl,mean_reward\n")
+    env = BusEnv("Fuzzy")
     #env.seed(123)
     start = timeit.default_timer()
     #env.reset()
@@ -92,7 +92,7 @@ def Run_Fuzzy():
             if c==True :
                 if i!=128:
                     env.reset()
-                files.write(str(tong)+","+str(soluong)+"\n")
+                files.write(str(tong)+","+str(soluong)+","+str(tong/soluong)+"\n")
                 print(tong)
     stop = timeit.default_timer()
     print('Time: ', stop - start)  
@@ -118,40 +118,40 @@ def Run_DQL():
     model=build_model(14,4)
     num_actions = 4
     policy = EpsGreedyQPolicy(0.1)
-    env = BusEnv()
+    env = BusEnv("DQL")
     env.seed(123)
     memory = SequentialMemory(limit=5000, window_length=1)
     
     dqn = DQNAgent(model=model, nb_actions=num_actions, memory=memory, nb_steps_warmup=10,\
               target_model_update=1e-3, policy=policy,gamma=0.9,memory_interval=1)
-    files = open("DQL.csv","w")
+    files = open("testDQL.csv","w")
     files.write("kq\n")
     #create callback
-    callbacks = CustomerTrainEpisodeLogger("DQL_1.csv")
+    callbacks = CustomerTrainEpisodeLogger("DQL_5phut.csv")
     callback2 = ModelIntervalCheckpoint("weight_DQL.h5f",interval=50000)
     callback3 = TestLogger11(files)
     dqn.compile(Adam(lr=1e-3), metrics=['mae'])
-    dqn.fit(env, nb_steps= 124098, visualize=False, verbose=2,callbacks=[callbacks,callback2])
+    dqn.fit(env, nb_steps= 94151, visualize=False, verbose=2,callbacks=[callbacks,callback2])
 
 def Run_FDQO():
     FDQO_method = Model_Deep_Q_Learning(14,4)
     model = FDQO_method.build_model()
     #Create enviroment FDQO
-    env = BusEnv()
+    env = BusEnv("FDQO")
     env.seed(123)
     #create memory
     memory = SequentialMemory(limit=5000, window_length=1)
     #create policy 
     policy = EpsGreedyQPolicy(0.0)
     #open files
-    files = open("test_res_tang_test1s11.csv","w")
+    files = open("testFDQO.csv","w")
     files.write("kq\n")
     #create callback
-    callbacks = CustomerTrainEpisodeLogger("ketqua_oneday111.csv")
-    callback2 = ModelIntervalCheckpoint("weight_res111.h5f",interval=50000)
+    callbacks = CustomerTrainEpisodeLogger("FDQO_5phut.csv")
+    callback2 = ModelIntervalCheckpoint("weight_FDQO.h5f",interval=50000)
     callback3 = TestLogger11(files)
     model.compile(Adam(lr=1e-3), metrics=['mae'])
-    model.fit(env, nb_steps= 124098, visualize=False, verbose=2,callbacks=[callbacks,callback2])
+    model.fit(env, nb_steps= 94151, visualize=False, verbose=2,callbacks=[callbacks,callback2])
     files.close()
 
 if __name__=="__main__":
