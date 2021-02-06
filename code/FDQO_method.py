@@ -224,7 +224,8 @@ class DQNAgent(AbstractDQNAgent):
         #logic block when computing node is bus node
         if action>0 and action<4:
             Rate_trans_req_data = (10*np.log2(1+46/(np.power(observation[(action-1)*3],4)*100))) / 8
-            time_delay =  observation[11]/observation[2+(action-1)*3] + max(observation[12]/Rate_trans_req_data,observation[1+(action-1)*3])
+            time_delay =  observation[11]/(1000*observation[2+(action-1)*3]) + max(observation[12]/(Rate_trans_req_data*1000),observation[1+(action-1)*3])
+
             #distance_response = self.readexcel(900+action-1,self.observation[1+(action-1)*3]+self.time)
             #Rate_trans_res_data = (10*np.log2(1+46/(np.power(distance_response,4)*100)))/8
             #time_delay = (self.observation[1+(action-1)*3]+self.queue[0][3]/(Rate_trans_res_data*1000))
@@ -232,7 +233,10 @@ class DQNAgent(AbstractDQNAgent):
         
         #logic block when computing node is server
         if action == 0 :
-            time_delay = observation[11]/observation[10]
+            time_delay = observation[11]/(observation[10]*1000)
+            #print(observation[11]/(1000*observation[2+(action-1)*3]))
+            #print(time_delay)
+            #import pdb;pdb.set_trace()
             #self.node_computing.write("{},{},{},{},{},{}".format(action,0,self.observation[9],self.observation[1],self.observation[4],self.observation[7]))
         
         #self.n_tasks_in_node[action] = self.n_tasks_in_node[action]+1
@@ -244,9 +248,10 @@ class DQNAgent(AbstractDQNAgent):
         q_values = self.compute_q_values(state)
         if self.training:
             action = self.policy.select_action(q_values=q_values)
-            if self.estimate_reward(action,observation)>0.7:
+            if self.estimate_reward(action,observation)>0.8:
                 action = action
                 self.files.write("0\n")
+                #print("A")
             else:
                 action = self.fuzzy_logic.choose_action(observation)
                 self.files.write("1\n")
