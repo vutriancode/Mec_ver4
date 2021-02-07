@@ -35,7 +35,7 @@ class Bandit:
 
         self.ucb = ucb  # if select action using upper-confidence-bound
         self.c = c
-
+        self.count_loop = 0
     def chooseAction(self):
         # explore
         if np.random.uniform(0, 1) <= self.exp_rate:
@@ -63,12 +63,15 @@ class Bandit:
         reward = m[1]
         self.reward_5minus = self.reward_5minus + reward
         done = m[2]
-        if done :
+        if done:
             self.his_files.write("{},{},{}\n".format(self.count_5minus, self.reward_5minus, self.reward_5minus/self.count_5minus))
             self.count_5minus = 0
+            self.count_loop += 1
+
             self.reward_5minus = 0
             self.end = True
-            self.enviroment.reset()
+            if self.count_loop != 100:
+                self.enviroment.reset()
         # using incremental method to propagate
         self.values[action] += self.lr * (reward - self.values[action])  # look like fixed lr converges better
 
@@ -76,7 +79,7 @@ class Bandit:
         self.avg_reward.append(self.total_reward / self.times)
         self.mab.write(str(self.total_reward / self.times)+"\n")
     def play(self):
-        for i in range(99):
+        for i in range(100):
             self.end = False 
             while not self.end:
                 action = self.chooseAction()

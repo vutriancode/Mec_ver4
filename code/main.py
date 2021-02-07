@@ -63,7 +63,7 @@ def Run_Fuzzy():
     #env.seed(123)
     start = timeit.default_timer()
     #env.reset()
-    for i in range(99):
+    for i in range(100):
         tong=0
         h=0
         soluong=0
@@ -90,7 +90,7 @@ def Run_Fuzzy():
             soluong+=1
             files1.write(str(sumreward / nreward)+"\n")
             if c==True :
-                if i!=128:
+                if i!=99:
                     env.reset()
                 files.write(str(tong)+","+str(soluong)+","+str(tong/soluong)+"\n")
                 print(tong)
@@ -131,7 +131,7 @@ def Run_DQL():
     callback2 = ModelIntervalCheckpoint("weight_DQL.h5f",interval=50000)
     callback3 = TestLogger11(files)
     dqn.compile(Adam(lr=1e-3), metrics=['mae'])
-    dqn.fit(env, nb_steps= 94151, visualize=False, verbose=2,callbacks=[callbacks,callback2])
+    dqn.fit(env, nb_steps= 95162, visualize=False, verbose=2,callbacks=[callbacks,callback2])
 
 def Run_FDQO():
     FDQO_method = Model_Deep_Q_Learning(14,4)
@@ -151,7 +151,7 @@ def Run_FDQO():
     callback2 = ModelIntervalCheckpoint("weight_FDQO.h5f",interval=50000)
     callback3 = TestLogger11(files)
     model.compile(Adam(lr=1e-3), metrics=['mae'])
-    model.fit(env, nb_steps= 94151, visualize=False, verbose=2,callbacks=[callbacks,callback2])
+    model.fit(env, nb_steps= 95162, visualize=False, verbose=2,callbacks=[callbacks,callback2])
     files.close()
 
 if __name__=="__main__":

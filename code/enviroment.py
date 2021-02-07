@@ -18,7 +18,6 @@ class BusEnv(gym.Env):
         self.n_tasks_in_node = [0, 0, 0, 0]
         self.action_space = spaces.Discrete(5)
         self.observation_space = spaces.Box(0, 100, [16])
-        self.index_of_episode = 0 
         #streaming data of localtion of three bus with(900, 901, 902)
         data900 = pd.read_excel(os.path.join(DATA_DIR, "data9000.xlsx"), index_col=0).to_numpy()
         data900 = data900[:, 13:15]
@@ -27,30 +26,36 @@ class BusEnv(gym.Env):
         data902 = pd.read_excel(os.path.join(DATA_DIR , "data9002.xlsx"), index_col=0).to_numpy()
         data902 = data902[:, 13:15]
         self.data_bus = {"900":data900, "901":data901, "902":data902}
-        #streaming data of task 
-        self.data = pd.read_csv(os.path.join(DATA_TASK, "datatask{}.csv".format(self.index_of_episode))).to_numpy()
-        self.data = np.sort(self.data, axis=0)
-        #self.data[:,2] = self.data[:,2] / 1000.0
-        #self.data[:,1] = self.data[:,1] / 1024.0
-        
-        self.n_quality_tasks = [0,0,0]
-        self.queue = copy.deepcopy(self.data[self.data[:,0]==self.data[0][0]])
-        self.data = self.data[self.data[:,0]!=self.data[0][0]]
-        self.result = []
-        self.time_last = self.data[-1][0]
-        self.time = self.queue[0][0]
-        #configuration for connection radio between bus and 
+        #streaming data of task
+        if env != "DQL" and env != "FDQO": 
+            self.index_of_episode = 0
+            self.data = pd.read_csv(os.path.join(DATA_TASK, "datatask{}.csv".format(self.index_of_episode)),header=None).to_numpy()
+            self.data = np.sort(self.data, axis=0)
+            #self.data[:,2] = self.data[:,2] / 1000.0
+            #self.data[:,1] = self.data[:,1] / 1024.0
+            
+            self.n_quality_tasks = [0,0,0]
+            self.queue = copy.deepcopy(self.data[self.data[:,0]==self.data[0][0]])
+            self.data = self.data[self.data[:,0]!=self.data[0][0]]
+            self.result = []
+            self.time_last = self.data[-1][0]
+            self.time = self.queue[0][0]
+
+            #first observation of agent about eviroment
+            self.observation = np.array([self.readexcel(900,self.queue[0][0]),0.0,1\
+                ,self.readexcel(901,self.queue[0][0]),0,1.2\
+                ,self.readexcel(902,self.queue[0][0]),0,1,\
+                0,3,\
+                self.queue[0][1],self.queue[0][2],self.queue[0][4]])
+        else:
+            self.index_of_episode = -1
+            self.observation = np.array([-1])
+        #save result into file cs
+                #configuration for connection radio between bus and 
         self.Pr = Config.Pr
         self.Pr2 = Config.Pr2
         self.Wm = Config.Wm
         self.o2 = 100
-        #first observation of agent about eviroment
-        self.observation = np.array([self.readexcel(900,self.queue[0][0]),0.0,1\
-            ,self.readexcel(901,self.queue[0][0]),0,1.2\
-            ,self.readexcel(902,self.queue[0][0]),0,1,\
-            0,3,\
-            self.queue[0][1],self.queue[0][2],self.queue[0][4]])
-        #save result into file cs
         if env == "MAB":
             self.rewardfiles = open("MAB_5phut_env.csv","w")
             self.quality_result_file = open("n_quality_tasks_mab.csv","w")
@@ -182,6 +187,28 @@ class BusEnv(gym.Env):
         return [seed]
 
     def reset(self):
+        if self.index_of_episode == -1: 
+            self.index_of_episode = 0
+            self.data = pd.read_csv(os.path.join(DATA_TASK, "datatask{}.csv".format(self.index_of_episode)),header=None).to_numpy()
+            self.data = np.sort(self.data, axis=0)
+            #self.data[:,2] = self.data[:,2] / 1000.0
+            #self.data[:,1] = self.data[:,1] / 1024.0
+            
+            self.n_quality_tasks = [0,0,0]
+            self.queue = copy.deepcopy(self.data[self.data[:,0]==self.data[0][0]])
+            self.data = self.data[self.data[:,0]!=self.data[0][0]]
+            self.result = []
+            self.time_last = self.data[-1][0]
+            self.time = self.queue[0][0]
+
+            #first observation of agent about eviroment
+            self.observation = np.array([self.readexcel(900,self.queue[0][0]),0.0,1\
+                ,self.readexcel(901,self.queue[0][0]),0,1.2\
+                ,self.readexcel(902,self.queue[0][0]),0,1,\
+                0,3,\
+                self.queue[0][1],self.queue[0][2],self.queue[0][4]])
+            return self.observation
+
         self.result = []
         self.number = 0
         self.guess_count = 0
@@ -189,7 +216,7 @@ class BusEnv(gym.Env):
         self.n_quality_tasks = [0, 0, 0]
         self.n_tasks_in_node=[0, 0, 0, 0]
         self.index_of_episode = self.index_of_episode + 1
-        self.data = pd.read_csv(os.path.join(DATA_TASK,"datatask{}.csv".format(self.index_of_episode))).to_numpy()
+        self.data = pd.read_csv(os.path.join(DATA_TASK,"datatask{}.csv".format(self.index_of_episode)),header=None).to_numpy()
         self.data = np.sort(self.data, axis=0)
         #self.data[:,2] = self.data[:,2] / 1000.0
         #self.data[:,1] = self.data[:,1] / 1024.0
