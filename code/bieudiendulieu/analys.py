@@ -8,7 +8,7 @@ sns.set_style("white")
 
 xxx=open("max-min.csv","w")
 xxx.write("thuoctinh,fuzzy and deep q,deep q learning,MAB,fuzzy\n")
-x= 95262
+x= 104838
 
 
 c=pd.read_csv("MAB_5phut.csv")[0:100]
