@@ -19,7 +19,10 @@ aa =[]
 for i in range(100):
     aa.append([m[i],n[i]])
 print(aa)
-df = pd.DataFrame(aa)
+df = pd.DataFrame(aa,columns = ["Fuzzy","DQL"])
 df.plot.line()
+plt.savefig("F-Qratio.eps")
+
 plt.show()
+
 print(df)
