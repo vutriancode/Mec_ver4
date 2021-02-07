@@ -44,6 +44,7 @@ b=pd.read_csv("chiatask_dql.csv")[0:95162]
 #plt.legend()
 #plt.show()
 #plt.savefig("distributionct.pdf")
+xxx.write("may0,\n")
 files1=a[a["somay"]==0]
 files2=b[b["somay"]==0]
 files3=c[c["somay"]==0]
@@ -62,6 +63,7 @@ xxx.write("average_quality,"+str(np.around(np.average(files1["reward"]),decimals
     +str(np.around(np.average(files3["reward"]),decimals=2))+","+str(np.around(np.average(files4["reward"]),decimals=2))+"\n")
 xxx.write("var_time,"+str(np.around(np.var(files1["may0"]),decimals=2))+","+str(np.around(np.var(files2["may0"]),decimals=2))+","\
     +str(np.around(np.var(files3["may0"]),decimals=2))+","+str(np.around(np.var(files4["may0"]),decimals=2))+"\n")
+xxx.write("may1,\n")
 files1=a[a["somay"]==1]
 files2=b[b["somay"]==1]
 files3=c[c["somay"]==1]
@@ -80,6 +82,7 @@ xxx.write("average_quality,"+str(np.around(np.average(files1["reward"]),decimals
     +str(np.around(np.average(files3["reward"]),decimals=2))+","+str(np.around(np.average(files4["reward"]),decimals=2))+"\n")
 xxx.write("var_time,"+str(np.around(np.var(files1["may1"]),decimals=2))+","+str(np.around(np.var(files2["may1"]),decimals=2))+","\
     +str(np.around(np.var(files3["may1"]),decimals=2))+","+str(np.around(np.var(files4["may1"]),decimals=2))+"\n")
+xxx.write("may2,\n")
 files1=a[a["somay"]==2]
 files2=b[b["somay"]==2]
 files3=c[c["somay"]==2]
@@ -98,6 +101,7 @@ xxx.write("average_quality,"+str(np.around(np.average(files1["reward"]),decimals
     +str(np.around(np.average(files3["reward"]),decimals=2))+","+str(np.around(np.average(files4["reward"]),decimals=2))+"\n")
 xxx.write("var_time,"+str(np.around(np.var(files1["may2"]),decimals=2))+","+str(np.around(np.var(files2["may2"]),decimals=2))+","\
     +str(np.around(np.var(files3["may2"]),decimals=2))+","+str(np.around(np.var(files4["may2"]),decimals=2))+"\n")
+xxx.write("may3,\n")
 files1=a[a["somay"]==3]
 files2=b[b["somay"]==3]
 files3=c[c["somay"]==3]

@@ -5,7 +5,7 @@ def column_chart1(strs):
     x=[i for i in range(1,101)]
     labels=["Combine fuzzy and deep q 1","deep q learning 1","fuzzy","random"]
     fig, ax = plt.subplots()
-    files=pd.read_csv("n_quality_tasks_fuzzy.csv")[0:100]
+    files=pd.read_csv("n_quality_tasks_mab.csv")[0:100]
     m=files["good"]+files["medium"]+files["bad"]
     ax.plot(x,[np.mean(files["good"]/m)]*len(x), label='Mean good',color="violet", linestyle='--')
     ax.plot(x,[np.mean(files["medium"]/m)]*len(x), label='Mean medium',color="y", linestyle='--')
@@ -21,7 +21,7 @@ def column_chart1(strs):
     #ax.legend(loc='lower left', bbox_to_anchor=(0., 1.02, 1., .102), ncol=6)
     #plt.show()
     plt.grid(alpha=0.5)
-    plt.savefig("Fuzzyqualitywithtimeslots.eps")
+    plt.savefig("mabqualitywithtimeslots.eps")
 def pie_chart1(strs):
     x=[i for i in range(1,101)]
     labels=["Combine fuzzy and deep q 1","deep q learning 1","fuzzy","random"]

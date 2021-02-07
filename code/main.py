@@ -131,7 +131,7 @@ def Run_DQL():
     callback2 = ModelIntervalCheckpoint("weight_DQL.h5f",interval=50000)
     callback3 = TestLogger11(files)
     dqn.compile(Adam(lr=1e-3), metrics=['mae'])
-    dqn.fit(env, nb_steps= 95162, visualize=False, verbose=2,callbacks=[callbacks,callback2])
+    dqn.fit(env, nb_steps= 104838, visualize=False, verbose=2,callbacks=[callbacks,callback2])
 
 def Run_FDQO():
     FDQO_method = Model_Deep_Q_Learning(14,4)
@@ -151,7 +151,7 @@ def Run_FDQO():
     callback2 = ModelIntervalCheckpoint("weight_FDQO.h5f",interval=50000)
     callback3 = TestLogger11(files)
     model.compile(Adam(lr=1e-3), metrics=['mae'])
-    model.fit(env, nb_steps= 95162, visualize=False, verbose=2,callbacks=[callbacks,callback2])
+    model.fit(env, nb_steps= 104838, visualize=False, verbose=2,callbacks=[callbacks,callback2])
     files.close()
 
 if __name__=="__main__":
