@@ -13,7 +13,7 @@ ax2=ax.add_subplot(2,2,2)
 ax3=ax.add_subplot(2,2,3)
 ax4=ax.add_subplot(2,2,4)"""
 xxx=open("because.csv","w")
-xxx.write("thuoctinh,fuzzy and deep q,deep q learning,fuzzy,random\n")
+xxx.write("thuoctinh,fuzzy and deep q,deep q learning,mab,fuzzy\n")
 x=[i for i in range(0,95162)]
 
 
