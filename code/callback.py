@@ -104,17 +104,17 @@ class CustomerTrainEpisodeLogger(Callback):
 
 
 
-class TestLogger11(Callback):
+class CustomerTestLogger(Callback):
     """ Logger Class for Test """
     def __init__(self,path):
-        self.files=path
+        self.files=open(path,"w")
+        self.files.write("total_reward,mean_reward\n")
+    """ Logger Class for Test """
     def on_train_begin(self, logs):
         """ Print logs at beginning of training"""
-
-        #print('Testing for {} episodes ...'.format(self.params['nb_episodes']))
+        print('Testing for {} episodes ...'.format(self.params['nb_episodes']))
 
     def on_episode_end(self, episode, logs):
-        
         """ Print logs at end of each episode """
         template = 'Episode {0}: reward: {1:.3f}, steps: {2}'
         variables = [
@@ -122,4 +122,4 @@ class TestLogger11(Callback):
             logs['episode_reward'],
             logs['nb_steps'],
         ]
-        self.files.write(str(variables[1])+"\n")
+        self.files.write("{},{},{}\n".format(logs['nb_steps'],logs['episode_reward'],logs['episode_reward']/logs['nb_steps']))

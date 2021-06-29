@@ -5,7 +5,7 @@ def column_chart1(strs):
     x=[i for i in range(1,101)]
     labels=["Combine fuzzy and deep q 1","deep q learning 1","fuzzy","random"]
     fig, ax = plt.subplots()
-    files=pd.read_csv("n_quality_tasks_fdqo.csv")[0:100]
+    files=pd.read_csv("result/DQN1/n_quality_tasks_DQN_s4.csv")[0:100]
     m=files["good"]+files["medium"]+files["bad"]
     print(m)
     print([np.mean(files["good"]/m)]*len(x))
@@ -19,10 +19,10 @@ def column_chart1(strs):
     ax.set_xlabel("Time slots",fontsize=15)
     ax.set_ylabel("Ratio",fontsize=15)
     ax.set_ylim(0,1)
-    #plt.show()
     #ax.legend(loc='lower left', bbox_to_anchor=(0., 1.02, 1., .102), ncol=6)
-    #plt.show()
     plt.grid(alpha=0.5)
+    plt.show()
+
     plt.savefig("fdqoqualitywithtimeslots.eps")
 def pie_chart1(strs):
     x=[i for i in range(1,101)]

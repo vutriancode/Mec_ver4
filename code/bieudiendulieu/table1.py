@@ -12,31 +12,31 @@ ax1=ax.add_subplot(2,2,1)
 ax2=ax.add_subplot(2,2,2)
 ax3=ax.add_subplot(2,2,3)
 ax4=ax.add_subplot(2,2,4)"""
-xxx=open("because.csv","w")
+xxx=open("because1.csv","w")
 xxx.write("thuoctinh,fuzzy and deep q,deep q learning,mab,fuzzy\n")
-x=[i for i in range(0,95162)]
+x=[i for i in range(0,104774)]
 
 
-c=pd.read_csv("chiatask_mab.csv")[0:95162]
-d=pd.read_csv("chiatask_fuzzy.csv")[0:95162]
+d=pd.read_csv("result/MAB2/chiatask_mab_s4.csv")[0:104774]
+c=pd.read_csv("result/DuelingDQN2/chiatask_DuelingDQN_s4.csv")[0:104774]
 """
 a=[]
 b=[]
 bins=[i*0.1 for i in range(0,21)]
 #for i in range(1,6):"""
-a=pd.read_csv("chiatask_fdqo.csv")[0:95162]
-b=pd.read_csv("chiatask_dql.csv")[0:95162]
+a=pd.read_csv("result/DQN2/chiatask_DQN_s4.csv")[0:104774]
+b=pd.read_csv("result/DDQN2/chiatask_DDQN_s4.csv")[0:104774]
 
-#a.append(files3["reward"][0:95162])
+#a.append(files3["reward"][0:104774])
 #print(files3["reward"].to_numpy())
-#print(files4["reward"][0:95162].to_numpy())
-#b.append(files4["reward"][0:95162])
-#plt.hist(files3["reward"][0:95162],bins=bins, density=True, histtype='step', cumulative=1,label='FCDQL')
-#plt.hist(files4["reward"][0:95162],bins=bins, density=True, histtype='step', cumulative=1,label='DQL')
+#print(files4["reward"][0:104774].to_numpy())
+#b.append(files4["reward"][0:104774])
+#plt.hist(files3["reward"][0:104774],bins=bins, density=True, histtype='step', cumulative=1,label='FCDQL')
+#plt.hist(files4["reward"][0:104774],bins=bins, density=True, histtype='step', cumulative=1,label='DQL')
 #sns.kdeplot(np.average(a,axis=0),cumulative=True,label='FCDQL',marker='^', markevery=0.2)
 #sns.kdeplot(np.average(b,axis=0),cumulative=True,label='EGDQL',marker='o', markevery=0.2)
-#plt.hist(files1["reward"][0:95162],bins=bins,cumulative=1, density=True,histtype='step',label='FC')
-#plt.hist(files2["reward"][0:95162],bins=bins,cumulative=1, density=True, histtype='step',label='Random')
+#plt.hist(files1["reward"][0:104774],bins=bins,cumulative=1, density=True,histtype='step',label='FC')
+#plt.hist(files2["reward"][0:104774],bins=bins,cumulative=1, density=True, histtype='step',label='Random')
 
 #plt.ylim(0,1.0)
 #plt.xlim(0,1.05)
@@ -57,8 +57,8 @@ xxx.write("min_time,"+str(np.around(np.min(files1["may0"]),decimals=2))+","+str(
     +str(np.around(np.min(files3["may0"]),decimals=2))+","+str(np.around(np.min(files4["may0"]),decimals=2))+"\n")
 xxx.write("median_time,"+str(np.around(np.median(files1["may0"]),decimals=2))+","+str(np.around(np.median(files2["may0"]),decimals=2))+","\
     +str(np.around(np.median(files3["may0"]),decimals=2))+","+str(np.around(np.median(files4["may0"]),decimals=2))+"\n")
-xxx.write("soluong,"+str(np.around((len(files1["may0"])/(95162*1)),decimals=2))+","+str(np.around((len(files2["may0"])/(95162*1)),decimals=2))+","\
-    +str(np.around((len(files3["may0"])/(95162)),decimals=2))+","+str(np.around((len(files4["may0"])/(95162)),decimals=2))+"\n")
+xxx.write("soluong,"+str(np.around((len(files1["may0"])/(104774*1)),decimals=2))+","+str(np.around((len(files2["may0"])/(104774*1)),decimals=2))+","\
+    +str(np.around((len(files3["may0"])/(104774)),decimals=2))+","+str(np.around((len(files4["may0"])/(104774)),decimals=2))+"\n")
 xxx.write("average_quality,"+str(np.around(np.average(files1["reward"]),decimals=2))+","+str(np.around(np.average(files2["reward"]),decimals=2))+","\
     +str(np.around(np.average(files3["reward"]),decimals=2))+","+str(np.around(np.average(files4["reward"]),decimals=2))+"\n")
 xxx.write("var_time,"+str(np.around(np.var(files1["may0"]),decimals=2))+","+str(np.around(np.var(files2["may0"]),decimals=2))+","\
@@ -76,8 +76,8 @@ xxx.write("min_time,"+str(np.around(np.min(files1["may1"]),decimals=2))+","+str(
     +str(np.around(np.min(files3["may1"]),decimals=2))+","+str(np.around(np.min(files4["may1"]),decimals=2))+"\n")
 xxx.write("median_time,"+str(np.around(np.median(files1["may1"]),decimals=2))+","+str(np.around(np.median(files2["may1"]),decimals=2))+","\
     +str(np.around(np.median(files3["may1"]),decimals=2))+","+str(np.around(np.median(files4["may1"]),decimals=2))+"\n")
-xxx.write("soluong,"+str(np.around((len(files1["may1"])/(95162*1)),decimals=2))+","+str(np.around((len(files2["may1"])/(95162*1)),decimals=2))+","\
-    +str(np.around((len(files3["may1"])/(95162)),decimals=2))+","+str(np.around((len(files4["may1"])/(95162)),decimals=2))+"\n")
+xxx.write("soluong,"+str(np.around((len(files1["may1"])/(104774*1)),decimals=2))+","+str(np.around((len(files2["may1"])/(104774*1)),decimals=2))+","\
+    +str(np.around((len(files3["may1"])/(104774)),decimals=2))+","+str(np.around((len(files4["may1"])/(104774)),decimals=2))+"\n")
 xxx.write("average_quality,"+str(np.around(np.average(files1["reward"]),decimals=2))+","+str(np.around(np.average(files2["reward"]),decimals=2))+","\
     +str(np.around(np.average(files3["reward"]),decimals=2))+","+str(np.around(np.average(files4["reward"]),decimals=2))+"\n")
 xxx.write("var_time,"+str(np.around(np.var(files1["may1"]),decimals=2))+","+str(np.around(np.var(files2["may1"]),decimals=2))+","\
@@ -95,8 +95,8 @@ xxx.write("min_time,"+str(np.around(np.min(files1["may2"]),decimals=2))+","+str(
     +str(np.around(np.min(files3["may2"]),decimals=2))+","+str(np.around(np.min(files4["may2"]),decimals=2))+"\n")
 xxx.write("median_time,"+str(np.around(np.median(files1["may2"]),decimals=2))+","+str(np.around(np.median(files2["may2"]),decimals=2))+","\
     +str(np.around(np.median(files3["may2"]),decimals=2))+","+str(np.around(np.median(files4["may2"]),decimals=2))+"\n")
-xxx.write("soluong,"+str(np.around((len(files1["may2"])/(95162*1)),decimals=2))+","+str(np.around((len(files2["may2"])/(95162*1)),decimals=2))+","\
-    +str(np.around((len(files3["may2"])/(95162)),decimals=2))+","+str(np.around((len(files4["may2"])/(95162)),decimals=2))+"\n")
+xxx.write("soluong,"+str(np.around((len(files1["may2"])/(104774*1)),decimals=2))+","+str(np.around((len(files2["may2"])/(104774*1)),decimals=2))+","\
+    +str(np.around((len(files3["may2"])/(104774)),decimals=2))+","+str(np.around((len(files4["may2"])/(104774)),decimals=2))+"\n")
 xxx.write("average_quality,"+str(np.around(np.average(files1["reward"]),decimals=2))+","+str(np.around(np.average(files2["reward"]),decimals=2))+","\
     +str(np.around(np.average(files3["reward"]),decimals=2))+","+str(np.around(np.average(files4["reward"]),decimals=2))+"\n")
 xxx.write("var_time,"+str(np.around(np.var(files1["may2"]),decimals=2))+","+str(np.around(np.var(files2["may2"]),decimals=2))+","\
@@ -114,8 +114,8 @@ xxx.write("min_time,"+str(np.around(np.min(files1["may2"]),decimals=2))+","+str(
     +str(np.around(np.min(files3["may3"]),decimals=2))+","+str(np.around(np.min(files4["may3"]),decimals=2))+"\n")
 xxx.write("median_time,"+str(np.around(np.median(files1["may3"]),decimals=2))+","+str(np.around(np.median(files2["may3"]),decimals=2))+","\
     +str(np.around(np.median(files3["may3"]),decimals=2))+","+str(np.around(np.median(files4["may3"]),decimals=2))+"\n")
-xxx.write("soluong,"+str(np.around((len(files1["may3"])/(95162*1)),decimals=2))+","+str(np.around((len(files2["may3"])/(95162*1)),decimals=2))+","\
-    +str(np.around((len(files3["may3"])/(95162)),decimals=2))+","+str(np.around((len(files4["may3"])/(95162)),decimals=2))+"\n")
+xxx.write("soluong,"+str(np.around((len(files1["may3"])/(104774*1)),decimals=2))+","+str(np.around((len(files2["may3"])/(104774*1)),decimals=2))+","\
+    +str(np.around((len(files3["may3"])/(104774)),decimals=2))+","+str(np.around((len(files4["may3"])/(104774)),decimals=2))+"\n")
 xxx.write("average_quality,"+str(np.around(np.average(files1["reward"]),decimals=2))+","+str(np.around(np.average(files2["reward"]),decimals=2))+","\
     +str(np.around(np.average(files3["reward"]),decimals=2))+","+str(np.around(np.average(files4["reward"]),decimals=2))+"\n")
 xxx.write("var_time,"+str(np.around(np.var(files1["may3"]),decimals=2))+","+str(np.around(np.var(files2["may3"]),decimals=2))+","\
