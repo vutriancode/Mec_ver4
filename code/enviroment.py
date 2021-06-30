@@ -120,7 +120,6 @@ class BusEnv(gym.Env):
         time_delay = 0
         #print(self.observation)
         #logic block when computing node is bus node
-        action =np.argmin(np.array([self.observation[9],self.observation[1],self.observation[4],self.observation[7]])[0:2])
         if action>0 and action<4:
             Rate_trans_req_data = (10*np.log2(1+46/(np.power(self.observation[(action-1)*3],4)*100))) / 8
             #print(Rate_trans_req_data)
